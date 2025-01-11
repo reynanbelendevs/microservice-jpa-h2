@@ -1,0 +1,29 @@
+spring:
+    application:
+        name: service.gateway
+    cloud:
+        gateway:
+            routes:
+                - id: service-account
+                  uri: http://localhost:8081
+                  predicates:
+                    - Path=/gateway/api/v1/account/**
+                  filters:
+                    - RewritePath=/gateway(?<remaining>.*), ${remaining}
+server:
+  port: 8080
+
+management:
+    server:
+        port: 18080
+    endpoint:
+        health:
+            show-details: "always"
+    endpoints:
+        web:
+            exposure:
+                include:
+                - "*"
+logging:
+  level:
+    root: "INFO"
