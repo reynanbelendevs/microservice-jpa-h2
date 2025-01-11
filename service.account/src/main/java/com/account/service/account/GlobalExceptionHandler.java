@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-      
+
         String formattedErrors = errors.toString().replace("=", "-").replace("}", "").replace("{", "");
         BaseResponse<Map<String, String>> response = new BaseResponse<>(400, formattedErrors);
         return ResponseEntity.badRequest().body(response);

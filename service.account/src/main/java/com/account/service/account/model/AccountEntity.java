@@ -49,9 +49,9 @@ public class AccountEntity {
     }
 
     public AccountEntity(int id, @NotBlank @Size(max = 50) String customerName,
-            @NotBlank @Size(max = 20) String customerMobile, @NotBlank @Size(max = 50) String customerEmail,
-            @NotBlank @Size(max = 100) String address1, @Size(max = 100) String address2,
-            List<AccountTypeEntity> accountTypes) {
+                         @NotBlank @Size(max = 20) String customerMobile, @NotBlank @Size(max = 50) String customerEmail,
+                         @NotBlank @Size(max = 100) String address1, @Size(max = 100) String address2,
+                         List<AccountTypeEntity> accountTypes) {
         this.id = id;
         this.customerName = customerName;
         this.customerMobile = customerMobile;
@@ -61,5 +61,5 @@ public class AccountEntity {
         this.accountTypes = accountTypes;
     }
 
-    
+
 }

@@ -24,6 +24,7 @@ public class BaseResponse<T> {
         this.transactionStatusCode = transactionStatusCode;
         this.transactionStatusDescription = transactionStatusDescription;
     }
+
     public BaseResponse(int transactionStatusCode, String transactionStatusDescription, T data) {
         this.transactionStatusCode = transactionStatusCode;
         this.transactionStatusDescription = transactionStatusDescription;

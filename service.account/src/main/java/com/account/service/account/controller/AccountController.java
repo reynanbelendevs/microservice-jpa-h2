@@ -23,7 +23,7 @@ public class AccountController {
 
     @PostMapping("")
     public ResponseEntity<BaseResponse<Map<String, Object>>> createAccount(@RequestBody @Valid AccountCreationPayload account) {
-        AccountEntity  accountToCreate = accountService.createAccount(account);
+        AccountEntity accountToCreate = accountService.createAccount(account);
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("Customer account created", accountToCreate.getId());
         BaseResponse<Map<String, Object>> response = new BaseResponse<>(201, "Customer account created", responseData);
@@ -32,8 +32,8 @@ public class AccountController {
 
     @GetMapping("/{customerNumber}")
     public ResponseEntity<BaseResponse<AccountEntity>> getAccountDetails(@PathVariable int customerNumber) {
-        AccountEntity  accountToFind = accountService.findAccount(customerNumber);
-        if(accountToFind == null) {
+        AccountEntity accountToFind = accountService.findAccount(customerNumber);
+        if (accountToFind == null) {
             BaseResponse<AccountEntity> response = new BaseResponse<>(401, "Customer Account not found");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }

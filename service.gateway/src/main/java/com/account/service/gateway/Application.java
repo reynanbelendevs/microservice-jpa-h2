@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 @SpringBootApplication
 public class Application {
 
-	private static final Logger logger = LoggerFactory.getLogger(Application.class);
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		logger.info("Gateway Service Started");
-		SpringApplication.run(Application.class, args);
-	}
+        logger.info("Gateway Service Started");
+        SpringApplication.run(Application.class, args);
+    }
 
 }

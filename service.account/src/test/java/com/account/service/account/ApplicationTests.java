@@ -24,134 +24,129 @@ import com.account.service.account.model.AccountType;
 import com.account.service.account.model.AccountTypeEntity;
 
 
-
 @TestPropertySource(locations = "classpath:application_test.yml")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = Application.class)
 @ActiveProfiles("test")
 class ApplicationTests {
 
-	public static final String route_api = "/api/v1/account";
+    public static final String route_api = "/api/v1/account";
 
-	@Autowired
-	private WebTestClient webClient;
+    @Autowired
+    private WebTestClient webClient;
 
-	@MockBean
+    @MockBean
 
-	private AccountService accountService;
-	
+    private AccountService accountService;
 
-	@Nested
+
+    @Nested
     class AccountControllerMockTests {
-       
-       AccountEntity givenAccount() {
-	   AccountEntity mockAccount = new AccountEntity();
-			  
-	   mockAccount.setCustomerName("Renan");
-	   mockAccount.setCustomerEmail("renan@gmail.com");
-	   mockAccount.setCustomerMobile("1234567890");
-	   mockAccount.setAddress1("1234 Main St");
-	   mockAccount.setAddress2("");
-    
-        AccountTypeEntity accountTypeEntity = new AccountTypeEntity();
-        accountTypeEntity.setAccountType(AccountType.Savings);
-        accountTypeEntity.setCustomerNumber(UUID.randomUUID().toString());
-        accountTypeEntity.setAvailableBalance(0);
-    
-        mockAccount.setAccountTypes(List.of(accountTypeEntity)); 
-			when(accountService.findAccount(any(Integer.class))).thenReturn(mockAccount);
-			return mockAccount;
-	}
 
-	@Test
-	void testAccounts_200() {
-		AccountEntity mockAccount = givenAccount();
-		int customerNumber = 1;
-		webClient.get()
-		.uri(uriBuilder -> uriBuilder
-			.path(route_api + "/{customerNumber}")
-			.build(customerNumber))
-		.exchange()
-		.expectStatus()
-		.isOk()
-		.expectBody( AccountEntity.class)
-		.isEqualTo(mockAccount);
-		}
+        AccountEntity givenAccount() {
+            AccountEntity mockAccount = new AccountEntity();
 
-		@ParameterizedTest
-		@ValueSource(strings = {"", "NAN", "sample-customer"})
-		void testGetAccounts_invalidCustomer_500(String CustomerNumber) {
+            mockAccount.setCustomerName("Renan");
+            mockAccount.setCustomerEmail("renan@gmail.com");
+            mockAccount.setCustomerMobile("1234567890");
+            mockAccount.setAddress1("1234 Main St");
+            mockAccount.setAddress2("");
 
-			webClient.get()
-			.uri(uriBuilder -> uriBuilder
-				.path(route_api + "/{customerNumber}")
-				.build(CustomerNumber))
-			.exchange()
-			.expectStatus()
-			.is4xxClientError();
-		}
+            AccountTypeEntity accountTypeEntity = new AccountTypeEntity();
+            accountTypeEntity.setAccountType(AccountType.Savings);
+            accountTypeEntity.setCustomerNumber(UUID.randomUUID().toString());
+            accountTypeEntity.setAvailableBalance(0);
 
-		@Test
-		void testCreateAccount_200() {
-			
-			AccountEntity mockAccount = givenAccount();
-			AccountCreationPayload account = new AccountCreationPayload();
-			account.setCustomerName("Renan");
-			account.setCustomerEmail("renan@gmail.com");
-			account.setCustomerMobile("+649123456789012");
-			account.setAddress1("1234 Main St");
-			account.setAddress2("");
+            mockAccount.setAccountTypes(List.of(accountTypeEntity));
+            when(accountService.findAccount(any(Integer.class))).thenReturn(mockAccount);
+            return mockAccount;
+        }
 
-			when(accountService.createAccount(any(AccountCreationPayload.class))).thenReturn(mockAccount);
+        @Test
+        void testAccounts_200() {
+            AccountEntity mockAccount = givenAccount();
+            int customerNumber = 1;
+            webClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(route_api + "/{customerNumber}")
+                            .build(customerNumber))
+                    .exchange()
+                    .expectStatus()
+                    .isOk()
+                    .expectBody(AccountEntity.class)
+                    .isEqualTo(mockAccount);
+        }
 
-			webClient.post()
-			.uri(route_api)
-			.contentType(MediaType.APPLICATION_JSON)
-			.bodyValue(account)
-			.exchange()
-			.expectStatus()
-			.isOk();
-			
+        @ParameterizedTest
+        @ValueSource(strings = {"", "NAN", "sample-customer"})
+        void testGetAccounts_invalidCustomer_500(String CustomerNumber) {
 
-		}
+            webClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(route_api + "/{customerNumber}")
+                            .build(CustomerNumber))
+                    .exchange()
+                    .expectStatus()
+                    .is4xxClientError();
+        }
 
-		@Test
-		void testCreateAccount_noName_400() {
+        @Test
+        void testCreateAccount_200() {
 
-			AccountEntity mockAccount = givenAccount();
-			AccountCreationPayload account = new AccountCreationPayload();
-			account.setCustomerName("");
-			account.setCustomerEmail("renan@gmail.com");
-			account.setCustomerMobile("+649123456789012");
-			account.setAddress1("1234 Main St");
-			account.setAddress2("");
+            AccountEntity mockAccount = givenAccount();
+            AccountCreationPayload account = new AccountCreationPayload();
+            account.setCustomerName("Renan");
+            account.setCustomerEmail("renan@gmail.com");
+            account.setCustomerMobile("+649123456789012");
+            account.setAddress1("1234 Main St");
+            account.setAddress2("");
 
-			when(accountService.createAccount(any(AccountCreationPayload.class))).thenReturn(mockAccount);
+            when(accountService.createAccount(any(AccountCreationPayload.class))).thenReturn(mockAccount);
 
-			webClient.post()
-			.uri(route_api)
-			.contentType(MediaType.APPLICATION_JSON)
-			.bodyValue(account)
-			.exchange()
-			.expectStatus()
-			.isBadRequest();
-			
-		}
-
-		@Test
-		void testCreateAccount_noBody_400() {
-			webClient.post()
-			.uri(route_api)
-			.exchange()
-			.expectStatus()
-			.isBadRequest();
-		}
+            webClient.post()
+                    .uri(route_api)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(account)
+                    .exchange()
+                    .expectStatus()
+                    .isOk();
 
 
+        }
+
+        @Test
+        void testCreateAccount_noName_400() {
+
+            AccountEntity mockAccount = givenAccount();
+            AccountCreationPayload account = new AccountCreationPayload();
+            account.setCustomerName("");
+            account.setCustomerEmail("renan@gmail.com");
+            account.setCustomerMobile("+649123456789012");
+            account.setAddress1("1234 Main St");
+            account.setAddress2("");
+
+            when(accountService.createAccount(any(AccountCreationPayload.class))).thenReturn(mockAccount);
+
+            webClient.post()
+                    .uri(route_api)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(account)
+                    .exchange()
+                    .expectStatus()
+                    .isBadRequest();
+
+        }
+
+        @Test
+        void testCreateAccount_noBody_400() {
+            webClient.post()
+                    .uri(route_api)
+                    .exchange()
+                    .expectStatus()
+                    .isBadRequest();
+        }
 
 
-
-	
-}
+    }
 
 
 }

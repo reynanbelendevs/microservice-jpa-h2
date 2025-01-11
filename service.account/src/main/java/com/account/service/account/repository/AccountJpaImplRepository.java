@@ -13,7 +13,7 @@ import com.account.service.account.model.AccountEntity;
 
 
 public interface AccountJpaImplRepository extends JpaRepository<AccountEntity, Integer> {
-    
+
     List<AccountEntity> findAll();
 
     @Transactional
